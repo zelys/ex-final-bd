@@ -603,10 +603,10 @@ VALUE
   - Cantidad
 
 ```sql
-SELECT act.prest_id, pr.prest_fonasa, pr.prest_glosa, COUNT(*) AS cantidad
-FROM actos_quirurgicos act
-LEFT JOIN prestaciones pr ON act.prest_id = pr.prest_id
-GROUP BY act.prest_id ORDER BY cantidad DESC;
+SELECT a.prest_id, p.prest_fonasa, p.prest_glosa, COUNT(*) AS cantidad
+FROM actos_quirurgicos a
+LEFT JOIN prestaciones p ON a.prest_id = p.prest_id
+GROUP BY a.prest_id ORDER BY cantidad DESC;
 ```
 
 - Total, valor de prestaciones entre las fechas 01/03/2021 al 31/05/2021 por Especialidad médica.
@@ -617,11 +617,11 @@ GROUP BY act.prest_id ORDER BY cantidad DESC;
 
 ```sql
 SELECT e.esp_id, e.esp_glosa, SUM(p.prest_valor) AS total
-FROM actos_quirurgicos act
-INNER JOIN medicos med ON med.med_id = act.med_id
-INNER JOIN especialidades e ON e.esp_id = med.esp_id
-INNER JOIN prestaciones p ON p.prest_id = act.prest_id
-WHERE act.acto_fecha BETWEEN '2021-03-01' AND '2021-05-31'
+FROM actos_quirurgicos a
+INNER JOIN medicos m ON med.med_id = a.med_id
+INNER JOIN especialidades e ON e.esp_id = m.esp_id
+INNER JOIN prestaciones p ON p.prest_id = a.prest_id
+WHERE a.acto_fecha BETWEEN '2021-03-01' AND '2021-05-31'
 GROUP BY e.esp_id;
 ```
 
@@ -635,7 +635,7 @@ GROUP BY e.esp_id;
  
 ```sql
 SELECT m.med_id, m.med_nombres, m.med_apellido_paterno, m.med_apellido_materno, COUNT(*) AS promedio
-FROM actos_quirurgicos act
-INNER JOIN medicos m ON act.med_id = m.med_id
-GROUP BY act.med_id ORDER BY promedio DESC;
+FROM actos_quirurgicos a
+INNER JOIN medicos m ON a.med_id = m.med_id
+GROUP BY a.med_id ORDER BY promedio DESC;
 ```
