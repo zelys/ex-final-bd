@@ -39,10 +39,9 @@ CREATE TABLE pacientes(
   pac_apellido_paterno VARCHAR(500) NOT NULL,
   pac_apellido_materno VARCHAR(500) NOT NULL,
   pac_edad INT,
-  prev_id INT,
+  prev_id INT UNSIGNED,
   comu_id INT UNSIGNED,
-  # existe un error con la cantidad de registros de prev_id con la tabla previsiones  
-  # FOREIGN KEY(prev_id) REFERENCES previsiones(prev_id),
+  FOREIGN KEY(prev_id) REFERENCES previsiones(prev_id),
   FOREIGN KEY(comu_id) REFERENCES comunas(comu_id)
 );
 
@@ -79,7 +78,11 @@ VALUE
 (3, "FONASA C"),
 (4, "FONASA D"),
 (5, "FONASA ISAPRE COLMENA"),
-(6, "ISAPRE ING");
+(6, "ISAPRE ING"),
+(7, "ISAPRE MAS VIDA S.A."),
+(8, "ISAPRE SAN LORENZO"),
+(9, "ISAPRE VIDA TRES S.A."),
+(10, "SIN PREVISION");
 
 INSERT INTO comunas (comu_id, comu_glosa)
 VALUE
@@ -618,7 +621,7 @@ GROUP BY a.prest_id ORDER BY cantidad DESC;
 ```sql
 SELECT e.esp_id, e.esp_glosa, SUM(p.prest_valor) AS total
 FROM actos_quirurgicos a
-INNER JOIN medicos m ON med.med_id = a.med_id
+INNER JOIN medicos m ON m.med_id = a.med_id
 INNER JOIN especialidades e ON e.esp_id = m.esp_id
 INNER JOIN prestaciones p ON p.prest_id = a.prest_id
 WHERE a.acto_fecha BETWEEN '2021-03-01' AND '2021-05-31'
